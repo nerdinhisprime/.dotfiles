@@ -2,7 +2,6 @@
 
 create_simlinks() {
   local bin="$HOME/.local/bin"
-  local fonts="$HOME/.local/share/fonts"
 
   mkdir -p "$HOME/.config" "$bin" "$fonts"
 
@@ -22,12 +21,6 @@ create_simlinks() {
   if [[ -d "$HOME/.dotfiles/home/.local/bin" ]]; then
     for b in "$HOME/.dotfiles/home/.local/bin/"*; do
       ln -snf "$b" "$bin/"
-    done
-  fi
-
-  if [[ -d "$HOME/.dotfiles/home/.local/share/fonts" ]]; then
-    for f in "$HOME/.dotfiles/home/.local/share/fonts/"*; do
-      ln -snf "$f" "$fonts/"
     done
   fi
 

@@ -8,40 +8,14 @@ import shutil
 import getpass
 
 base_pkgs = [
-    "zsh",
-    "zsh-autosuggestions",
-    "zsh-syntax-highlighting",
     "neovim",
-    "git",
     "yazi",
-    "zoxide",
-    "eza",
     "openssh",
     "fastfetch",
     "curl",
-    "stow",
-]
-font_pkgs = [
-    "noto-fonts",
-    "noto-fonts-cjk",
-    "noto-fonts-emoji",
-    "noto-fonts-extra",
-    "ttf-dejavu",
-    "ttf-liberation",
-]
-sys_pkgs = [
-    "bluez",
-    "bluez-utils",
-    "bluetui",
-    "pulsemixer",
-    "pipewire",
-    "pipewire-pulse",
-    "pipewire-alsa",
-    "wireplumber",
-    "impala",
+    "btop",
     "brightnessctl",
     "openh264",
-    "btop",
 ]
 desktop_pkgs = [
     "niri",
@@ -51,31 +25,13 @@ desktop_pkgs = [
     "pcmanfm",
     "mako",
     "wlsunset",
-    "xdg-desktop-portal",
-    "xdg-desktop-portal-gtk",
-    "xdg-desktop-portal-gnome",
-    "gnome-keyring",
 ]
 dev_pkgs = ["tmux", "docker", "docker-compose", "npm"]
 android_pkgs = ["gvfs", "gvfs-mtp", "libmtp", "android-udev", "scrcpy"]
 nvidia_pkgs = ["nvidia-dkms", "nvidia-utils", "lib32-nvidia-utils"]
-stow_links = [
-    "zsh-core",
-    "zsh-desktop",
-    "tmux",
-    "foot",
-    "niri",
-    "font",
-    "bin",
-    "mako",
-    "user-dirs",
-    "waybar",
-]
 
 categories = {
     "base": base_pkgs,
-    "fonts": font_pkgs,
-    "system": sys_pkgs,
     "desktop": desktop_pkgs,
     "dev": dev_pkgs,
     "android": android_pkgs,
