@@ -43,7 +43,19 @@ sys_pkgs = [
     "openh264",
     "btop",
 ]
-desktop_pkgs = ["niri", "awww", "waybar", "foot", "pcmanfm", "mako"]
+desktop_pkgs = [
+    "niri",
+    "awww",
+    "waybar",
+    "foot",
+    "pcmanfm",
+    "mako",
+    "wlsunset",
+    "xdg-desktop-portal",
+    "xdg-desktop-portal-gtk",
+    "xdg-desktop-portal-gnome",
+    "gnome-keyring",
+]
 dev_pkgs = ["tmux", "docker", "docker-compose", "npm"]
 android_pkgs = ["gvfs", "gvfs-mtp", "libmtp", "android-udev", "scrcpy"]
 nvidia_pkgs = ["nvidia-dkms", "nvidia-utils", "lib32-nvidia-utils"]
@@ -91,75 +103,64 @@ def install_packages():
         to_install.extend(categories[pkg])
 
     to_install = list(set(to_install))
-    cmd = ["sudo", "pacman", "-S", "--needed", "--noconfirm"] + to_install
-    subprocess.run(["sudo", "pacman", "-Syu", "--noconfirm"])
-    subprocess.run(cmd)
+    if not to_install:
+        print("\nNo packages\n")
+        return
+    subprocess.run(
+        ["bash", "./bash-scripts/package-installer.sh"] + to_install, check=True
+    )
 
 
 def create_links():
     print("\nCreating links!\n")
-    subprocess.run(["sudo", "pacman", "-S", "stow", "--noconfirm"])
-    home = Path.home()
-    path_dotfiles = home / ".dotfiles"
-
-    if not path_dotfiles.is_dir():
-        print(f"There is not .dotfile directory at {path_dotfiles}")
-        sys.exit(1)
-
-    dirs = [".local/share/fonts", ".local/bin", ".config/nvim"]
-    for directory in dirs:
-        (home / directory).mkdir(parents=True, exist_ok=True)
-
-    for link in stow_links:
-        subprocess.run(["stow", "--restow", link], cwd=path_dotfiles, check=True)
-
-
-def update_fonts_cache():
-    print("\nUpdate font cache!\n")
-    subprocess.run(["fc-cache", "-fv"])
-
-
-def change_shell():
-    print("\nChanging shell!\n")
-    current_shell = os.environ.get("SHELL")
-    zsh_path = shutil.which("zsh")
-
-    if zsh_path and current_shell != zsh_path:
-        print(f"Changing default shell to {zsh_path}...")
-        subprocess.run(["sudo", "chsh", "-s", zsh_path, getpass.getuser()], check=True)
+    subprocess.run(["bash", "./bash-scripts/create-simlinks.sh"], text=True)
 
 
 def setup_docker():
     print("\nDocker setup...\n")
-    subprocess.run(["sudo", "systemctl", "enable", "--now", "docker.service"])
-    subprocess.run(["sudo", "usermod", "-aG", "docker", getpass.getuser()])
+    subprocess.run(["bash", "./bash-scripts/setup-docker.sh"], text=True)
+
+
+def setup_bluetooth():
+    print("\nBluetooth setup...\n")
+    subprocess.run(["bash", "./bash-scripts/setup-bluetooth.sh"], text=True)
+
+
+def update_fonts_cache():
+    print("\nUpdate font cache!\n")
+    subprocess.run(["bash", "./bash-scripts/update-font-cache.sh"])
+
+
+def change_shell():
+    print("\nChanging shell!\n")
+    subprocess.run(["bash", "./bash-scripts/change-shell.sh"], text=True)
 
 
 def get_permissions_custom_scripts():
     print("\nGetting permissions for scripts from ~/.local/bin...\n")
-    bin_dir = Path.home() / ".local/bin"
-
-    if bin_dir.exists():
-        for script in bin_dir.iterdir():
-            if script.is_file():
-                script.chmod(script.stat().st_mode | 0o111)
-
-    subprocess.run(["sudo", "usermod", "-aG", "network", getpass.getuser()])
+    subprocess.run(["bash", "./bash-scripts/activate-custom-scripts.sh"], text=True)
 
 
-def setup_bluetooth():
-    print("\nBluetooth setup\n")
-    subprocess.run(["sudo", "systemctl", "enable", "--now", "bluetooth.service"])
+def install_aur():
+    print("\nInstall AUR installer\n")
+    subprocess.run(["bash", "./bash-scripts/install-aur.sh"], text=True)
+
+
+def setup_portals():
+    print("\nInstall portals\n")
+    subprocess.run(["bash", "./bash-scripts/setup-portals.sh"], text=True)
 
 
 def main():
     create_links()
     get_permissions_custom_scripts()
     install_packages()
+    install_aur()
     update_fonts_cache()
     setup_bluetooth()
     change_shell()
     setup_docker()
+    setup_portals()
     print("\nSystem deployment complete! Reboot required\n")
 
 
