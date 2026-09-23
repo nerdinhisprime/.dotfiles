@@ -3,7 +3,7 @@
 create_simlinks() {
   local bin="$HOME/.local/bin"
 
-  mkdir -p "$HOME/.config" "$bin" "$fonts"
+  mkdir -p "$HOME/.config" "$bin"
 
   shopt -s dotglob nullglob
 
@@ -12,10 +12,6 @@ create_simlinks() {
     if [[ "$name" != "." && "$name" != ".." && "$name" != ".config" && "$name" != ".local" ]]; then
       ln -snf "$file" "$HOME/$name"
     fi
-  done
-
-  for config in "$HOME/.dotfiles/home/.config/"*; do
-    ln -snf "$config" "$HOME/.config/"
   done
 
   if [[ -d "$HOME/.dotfiles/home/.local/bin" ]]; then

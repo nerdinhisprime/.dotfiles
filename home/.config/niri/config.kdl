@@ -1,3 +1,13 @@
+// раскоментируй если js проги запускаются на Nvidia (будут запускаться на встройке)
+// xwayland-satellite {
+//     path "/usr/bin/xwayland-satellite"
+// }
+//
+// environment {
+//     "__EGL_VENDOR_LIBRARY_FILENAMES" "/usr/share/glvnd/egl_vendor.d/50_mesa.json"
+//     "VK_ICD_FILENAMES" "/usr/share/vulkan/icd.d/intel_icd.json"
+// }
+
 input {
     keyboard {
         xkb {
