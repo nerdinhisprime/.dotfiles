@@ -9,7 +9,7 @@ install_gui_stack() {
 
   shopt -u dotglob nullglob
 
-  sudo pacman -S --noconfirm --needed niri foot waybar awww pcmanfm mako wlsunset brightnessctl openh264
+  sudo pacman -S --noconfirm --needed niri foot waybar awww pcmanfm mako brightnessctl openh264
 }
 
 install_gui_stack
